@@ -52,6 +52,6 @@ jobs:
 
       # Deploy image
       - name: Deploy docker
-        run: gcloud run deploy backend-${{ secrets.PROJECT_NAME }}-${{ github.base_ref }}
+        run: gcloud run deploy ${{ secrets.PROJECT_NAME }}-${{ github.base_ref }}
           --image $IMAGE_NAME --region=us-central1 --memory 4Gi --min-instances 0 
           --platform managed --port 8080 --allow-unauthenticated
