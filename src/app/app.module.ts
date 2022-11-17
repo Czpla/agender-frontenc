@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoginModule } from './pages/login/login.module';
-import { HomeModule } from './pages/home/home.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,7 +18,6 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     LoginModule,
-    HomeModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
