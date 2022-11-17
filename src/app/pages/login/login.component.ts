@@ -51,8 +51,6 @@ export class LoginComponent implements OnInit {
             password: passwordCrypto
         };
 
-        console.log(CryptoJS.MD5(user.password).toString());
-
         this.userService.login(user).subscribe({
             error: (error) => {
                 const errorMessage = error.error.message;
