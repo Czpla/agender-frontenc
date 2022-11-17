@@ -10,9 +10,9 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
   },
   {
-    path: 'home',
+    path: 'main',
     canActivate: [AuthenticatedUserGuard],
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
+    loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule),
   },
   {
     path: '',
