@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { Buffer } from 'buffer';
 import { environment } from 'src/environments/environment';
 
@@ -12,50 +11,36 @@ export interface IUser {
     password: string;
 }
 
+type LoginResponse = {
+    accessToken: string;
+    expiresIn: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-    public apiUrlLogin = `${environment.apiUrl}/login`;
+    public apiUrlLogin = `${environment.apiUrl}/auth/sign-in`;
 
     constructor(
-        // private readonly httpClient: HttpClient,
+        private readonly httpClient: HttpClient,
         private readonly router: Router
     ) { }
 
-    public login(user: IUser) : Observable<any> {
-        // return this.httpClient.post<any>(apiUrlUser, user).pipe(
-        // tap((resposta) => {
-        //     if(!resposta.sucesso) return;
-        //     localStorage.setItem('token', btoa(JSON.stringify(resposta['token'])));
-        //     localStorage.setItem('user', btoa(JSON.stringify(resposta['user'])));
-        //     this.router.navigate(['']);
-        // }));
+    public login(user: IUser): Observable<LoginResponse> {
+        return this.httpClient.post<LoginResponse>(this.apiUrlLogin, user)
+            .pipe(
+                tap((response: LoginResponse) => { 
 
-        return this.mockUsuarioLogin(user).pipe(tap((response) => {
-            if(!response.sucesso) return;
+                    localStorage.setItem('token', Buffer.from(response.accessToken).toString('base64'));
+                    localStorage.setItem('user', Buffer.from(JSON.stringify(user)).toString('base64'));
+                    this.router.navigate(['']);
+                }), ((error) => { 
 
-            localStorage.setItem('token', Buffer.from('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9').toString('base64'));
-            localStorage.setItem('user', Buffer.from(JSON.stringify(user)).toString('base64'));
-            this.router.navigate(['']);
-        }));
-    }
-
-    private mockUsuarioLogin(user: IUser): Observable<any> {
-
-        var retornoMock: any = [];
-        if(user.email === 'edu.czpla@gmail.com' && user.password == '12345678'){
-            retornoMock.sucesso = true;
-            retornoMock.user = user;
-            retornoMock.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
-            return of(retornoMock);
-        }
-
-        retornoMock.sucesso = false;
-        retornoMock.user = user;
-
-        return of(retornoMock);
+                    return error; 
+                }),
+            );
     }
 
     public logout(): void {

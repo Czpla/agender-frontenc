@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000'
+  apiUrl: 'https://backend-agender-development-7xi34iwmna-uc.a.run.app'
 };
 
 /*
